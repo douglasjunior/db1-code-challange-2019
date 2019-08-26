@@ -1,24 +1,34 @@
 import React from 'react';
 
-import Titulo from './components/Titulo';
-import Contador from './components/Contador';
+import { Container } from 'reactstrap';
+import {
+  BrowserRouter, Route,
+  Switch,
+} from 'react-router-dom';
 
-import './App.css';
+import Home from './pages/Home';
+import Tasks from './pages/Tasks';
+import About from './pages/About';
+import Menu from './components/Menu';
+import PrivateRoute from './components/PrivateRoute';
+import Login from './pages/Login';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
-    <div className="App">
-      <Titulo textColor='green'>
-        Primeiro seção
-      </Titulo>
-
-      <Titulo textColor='red'>
-        Segunda seção
-      </Titulo>
-
-      <Contador inicio={10} tempo={200} />
-      <Contador inicio={100} tempo={550} />
-    </div>
+    <BrowserRouter>
+      <Menu />
+    
+      <Container>
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <PrivateRoute path="/tarefas" component={Tasks} />
+          <Route path="/sobre" component={About} />
+          <Route path="/login" component={Login} />
+          <Route component={NotFound} />
+        </Switch>
+      </Container>
+    </BrowserRouter>
   );
 }
 
