@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 
 import { Route } from 'react-router-dom';
+
 import axios from 'axios';
-import { Spinner } from 'reactstrap';
+import {
+    Spinner, Form, Row, Col,
+} from 'reactstrap';
+
 import TaskList from '../components/TaskList';
+import Input from '../components/Input';
+import { validateTaskSearch } from '../utils/validations';
 
 export default class Tasks extends Component {
 
     state = {
         tasks: [],
+        filteredTasks: [],
         fetching: false,
+        searchValue: '',
     }
 
     componentDidMount() {
@@ -23,7 +31,8 @@ export default class Tasks extends Component {
                 // invocar quando a requisição terminar com status 2XX
                 const { data } = response
                 this.setState({
-                    tasks: data
+                    tasks: data,
+                    filteredTasks: data,
                 })
             })
             .catch(error => {
@@ -46,8 +55,24 @@ export default class Tasks extends Component {
         this.props.history.push(`/tarefas/${task.id}`)
     }
 
+    onSearchChange = (event, valid) => {
+        if (!valid) return
+        
+        const { value } = event.target;
+        const { tasks } = this.state;
+
+        const filteredTasks = tasks.filter(task => {
+            return task.title.includes(value);
+        });
+
+        this.setState({
+            filteredTasks,
+            searchValue: value,
+        });
+    }
+
     renderTasks = () => {
-        const { fetching, tasks } = this.state;
+        const { fetching, filteredTasks, searchValue } = this.state;
         if (fetching) {
             return (
                 <div>
@@ -59,7 +84,11 @@ export default class Tasks extends Component {
             )
         }
         return (
-            <TaskList tasks={tasks} onTaskClick={this.onTaskClick} />
+            <TaskList
+                tasks={filteredTasks}
+                onTaskClick={this.onTaskClick}
+                highlight={searchValue}
+            />
         )
     }
 
@@ -87,10 +116,31 @@ export default class Tasks extends Component {
         />
     )
 
+    renderFilter = () => {
+        return (
+            <Form>
+                <Row form>
+                    <Col md={6}>
+                        <Input
+                            id="todo-search"
+                            label="Filtro"
+                            type="text"
+                            placeholder="Buscar tarefas"
+                            onChange={this.onSearchChange}
+                            validate={validateTaskSearch}
+                        />
+                    </Col>
+                </Row>
+            </Form>
+        )
+    }
+
     render() {
         return (
             <div>
                 <h1>Página de Tarefas</h1>
+                {this.renderFilter()}
+
                 {this.renderTasks()}
 
                 {this.renderTaskRoute()}

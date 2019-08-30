@@ -2,21 +2,20 @@ import React, { Component } from 'react';
 
 import { Table } from 'reactstrap';
 
+import TaskItem from './TaskItem';
+
+
 export default class TaskList extends Component {
 
-    renderTaskItem = (task, index) => {
-        const { onTaskClick } = this.props;
+    renderTaskItem = task => {
+        const { onTaskClick, highlight } = this.props;
         return (
-            <tr
-                style={{ cursor: 'pointer' }}
+            <TaskItem
                 key={task.id}
-                onClick={() => onTaskClick(task)}
-            >
-                <td>{task.id}</td>
-                <td>{task.title}</td>
-                <td>{task.completed ? 'Sim' : 'Não'}</td>
-                <td>{task.userId}</td>
-            </tr>
+                task={task}
+                highlight={highlight}
+                onTaskClick={onTaskClick}
+            />
         );
     }
 
