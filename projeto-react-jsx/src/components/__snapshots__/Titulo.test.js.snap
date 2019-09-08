@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot tests Testa se o componente renderiza de acordo com a snapshot 1`] = `
+<h1
+  style={
+    Object {
+      "backgroundColor": "yellow",
+      "color": undefined,
+    }
+  }
+>
+  Meu título
+</h1>
+`;

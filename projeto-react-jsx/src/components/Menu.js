@@ -47,6 +47,9 @@ class Menu extends Component {
                             <NavLinkRouter to="/tarefas">Tarefas</NavLinkRouter>
                         </NavItem>
                         <NavItem>
+                            <NavLinkRouter to="/postagens">Postagens</NavLinkRouter>
+                        </NavItem>
+                        <NavItem>
                             <NavLinkRouter to="/sobre">Sobre</NavLinkRouter>
                         </NavItem>
                         {this.renderLogout()}

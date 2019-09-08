@@ -5,7 +5,6 @@ const Titulo = (props) => {
         color: props.textColor,
         backgroundColor: 'yellow'
     }
-
     return (
         <h1 style={style}>
           {props.children}

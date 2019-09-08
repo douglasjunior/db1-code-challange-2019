@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import {
     FormGroup, Label, Input as InputReactstrap,
     FormFeedback,
-} from 'reactstrap'
+} from 'reactstrap';
 
 class Input extends Component {
 
