@@ -12,10 +12,8 @@
 
 @implementation MathModule
 
-// To export a module named CalendarManager
 RCT_EXPORT_MODULE(Math);
 
-// This would name the module AwesomeCalendarManager instead
 RCT_EXPORT_METHOD(sum: (NSInteger) numA
                   with: (NSInteger) numB
                   withResolver: (RCTPromiseResolveBlock) resolve
