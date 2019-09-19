@@ -4,7 +4,7 @@ import {
   ScrollView, TextInput,
   StyleSheet, TouchableOpacity,
   TouchableNativeFeedback,
-  Platform,
+  Platform, Alert,
 } from 'react-native';
 
 import defaultStyles from '../styles';
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class ComponentsShowcase extends Component {
+export default class ComponentsShowcaseScreen extends Component {
 
   state = {
     inputValue: '',
@@ -155,10 +155,14 @@ export default class ComponentsShowcase extends Component {
   renderTouchable = () => (
     <View>
       <MeuTouchable
-        onPress={() => alert('Clicou')}
+        onPress={() => Alert.alert('teste', 'testando')}
       >
         <View style={styles.button}>
-          <Text style={styles.buttonText}>PRESSIONE</Text>
+          <Text
+            pointerEvents="none"
+            style={styles.buttonText}>
+              PRESSIONE
+            </Text>
         </View>
       </MeuTouchable>
     </View>

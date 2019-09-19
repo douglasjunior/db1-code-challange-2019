@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { View, StatusBar } from 'react-native';
 
 import FirstScreen from './screens/FirstScreen';
-import ComponentsShowcase from './screens/ComponentsShowcase';
+import ComponentsShowcaseScreen from './screens/ComponentsShowcaseScreen';
+import PostsScreen from './screens/PostsScreen';
+import PaperScreen from './screens/PaperScreen';
 
 class App extends Component {
 
@@ -11,11 +13,13 @@ class App extends Component {
       <View style={{ flex: 1 }}>
         <StatusBar
           translucent={false}
-          backgroundColor="green"
+          // backgroundColor="green"
           barStyle="light-content"
         />
         {/* <FirstScreen />  */}
-        <ComponentsShowcase />
+        {/* <ComponentsShowcaseScreen /> */}
+        {/* <PostsScreen /> */}
+        <PaperScreen />
       </View>
     );
   }

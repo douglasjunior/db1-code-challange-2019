@@ -3,8 +3,8 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   card: {
     backgroundColor: 'white',
-    borderRadius: 2,
-    elevation: 2,
+    borderRadius: 4,
+    elevation: 4,
     shadowColor: 'black',
     shadowOffset: {
         width: 1,
