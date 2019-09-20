@@ -14,15 +14,20 @@ const renderCalendarIcon = () => (
   <EvilIcons name="calendar" color="white" size={20} />
 );
 
-const PaperScreen = () => (
+const PaperScreen = (props) => (
   <ScrollView
     contentContainerStyle={styles.scrollContainer}
   >
     <Button
       icon={renderCalendarIcon}
       mode="contained"
-      onPress={() => console.log('Pressed')}>
+      onPress={() => props.navigation.navigate('First', { userId: 10 })}>
       Eu sou um botão
+    </Button>
+    <Button
+      mode="contained"
+      onPress={() => props.navigation.navigate('Tabs')}>
+      Abrir Tabs
     </Button>
     <EvilIcons name="calendar" color="black" size={24} />
   </ScrollView>
