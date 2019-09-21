@@ -9,14 +9,15 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 
 import PaperScreen from './PaperScreen';
 import FirstScreen from './FirstScreen';
-import PostsScreen from './PostsScreen';
+import PhotosScreen from './PhotosScreen';
 import ComponentsShowcaseScreen from './ComponentsShowcaseScreen';
+import PostsScreen from './PostsScreen';
 
 const TabsNavigator = createMaterialTopTabNavigator({
-    Posts: {
-        screen: PostsScreen,
+    Photos: {
+        screen: PhotosScreen,
         navigationOptions: {
-            title: 'Posts'
+            title: 'Fotos'
         },
     },
     Components: {
@@ -48,6 +49,12 @@ const DrawerButton = withNavigation(props => {
 });
 
 const StackNavigator = createStackNavigator({
+    Posts: {
+        screen: PostsScreen,
+        navigationOptions: {
+            title: 'Posts',
+        }
+    },
     Paper: {
         screen: PaperScreen,
         navigationOptions: {

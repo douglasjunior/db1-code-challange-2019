@@ -1,122 +1,145 @@
 import React, { Component } from 'react';
+import { View, FlatList, StyleSheet } from 'react-native';
+
+import { connect } from 'react-redux';
 import {
-  View, ActivityIndicator,
-  FlatList, RefreshControl,
-} from 'react-native';
+  Button, TextInput, Text,
+  IconButton,
+} from 'react-native-paper';
+import { Form, Field } from 'react-final-form';
 
-import axios from 'axios';
-import PostCard from '../components/PostCard';
+import defaultStyles from '../styles';
+import { actions as postsActions } from '../redux/posts';
 
-async function getTokenFromStore() {
-  return 'sdf79a78dsf69as76f89ads6f87sda6';
-}
-
-axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com/';
-axios.interceptors.request.use(async (config) => {
-  const token = await getTokenFromStore();
-  config.headers.Authentication = `Bearer ${token}`;
-  return config;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  form: {
+    padding: 8,
+  },
+  postCard: {
+    margin: 8,
+    padding: 16,
+    paddingRight: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  errorMessage: {
+    color: 'red'
+  }
 });
 
-const keyExtractor = photo => String(photo.id);
+const postCardStyle = [defaultStyles.card, styles.postCard];
 
-export default class PostsScreen extends Component {
+const keyExtractor = (post, index) => String(index);
+
+const validateDescription = value => (
+  value && value.length < 20
+    ? undefined
+    : 'Informe a descrição com até 20 caracteres.'
+);
+
+class PostsScreen extends Component {
 
   state = {
-    fetching: false,
-    photos: [],
-    page: 1,
-    fetchingPage: false,
-  }
-  waitingPage = false
-
-  componentDidMount() {
-    this.getFirstPage();
+    postDescription: ''
   }
 
-  getNextPage = async () => {
-    this.setState({ fetchingPage: true });
-    try {
-      const { page } = this.state;
-      await this.requestPhotos(page + 1);
-    } finally {
-      this.setState({ fetchingPage: false });
-    }
+  onClearPress = () => {
+    this.props.clearPosts();
   }
 
-  getFirstPage = async () => {
-    this.setState({ fetching: true });
-    try {
-      await this.requestPhotos(1);
-    } finally {
-      this.setState({ fetching: false });
-    }
-  }
-
-  requestPhotos = async (page) => {
-    try {
-      const response = await axios.get('/photos', {
-        params: {
-          _limit: 10,
-          _page: page,
-        }
-      });
-      const { photos } = this.state;
-      const newPhotos = page === 1
-        ? response.data
-        : photos.concat(response.data);
-      this.setState({
-        photos: newPhotos,
-        page,
-      });
-    } catch (error) {
-      console.warn(error)
-    }
+  onAddPress = (values, formProps) => {
+    const { addPost } = this.props;
+    addPost(values.description);
+    setTimeout(formProps.reset);
   }
 
   renderItem = (record) => {
-    const { item: photo, index } = record;
+    const { item: post, index } = record;
+    const { removePost } = this.props;
     return (
-      <PostCard photo={photo} />
-    );
+      <View style={postCardStyle}>
+        <Text>
+          {post.description}
+        </Text>
+        <IconButton
+          icon="delete"
+          size={20}
+          color="red"
+          onPress={() => removePost(index)}
+        />
+      </View>
+    )
   }
 
-  onEndReached = async () => {
-    const { page, fetching, fetchingPage } = this.state;
-    if (fetching || fetchingPage || page > 500) return;
-    console.log(page);
-    await this.getNextPage();
+  renderDescriptionField = (fieldProps) => {
+    const { meta, input, ...others } = fieldProps;
+    const { onChange, ...inputOthers } = input;
+    const displayError = meta.touched && meta.invalid;
+    return (
+      <>
+        <TextInput
+          {...others}
+          error={displayError}
+          onChangeText={onChange}
+          {...inputOthers}
+        />
+        {displayError
+          ?  <Text style={styles.errorMessage}>{meta.error}</Text>
+          : null
+        }
+      </>
+    )
   }
 
-  renderFooter = () => {
-    const { fetchingPage } = this.state;
-    if (!fetchingPage) return null;
+  renderForm = (formProps) => {
+    const { handleSubmit, form } = formProps;
+    const formState = form.getState();
     return (
-      <ActivityIndicator
-        size="large"
-      />
+      <View style={styles.form}>
+        <Field
+          name="description"
+          label="Descrição"
+          mode="outlined"
+          returnKeyType="send"
+          onSubmitEditing={handleSubmit}
+          blurOnSubmit={false}
+          validate={validateDescription}
+          render={this.renderDescriptionField}
+        />
+        <Button disabled={formState.invalid} onPress={handleSubmit}>ADICIONAR</Button>
+        <Button onPress={this.onClearPress}>LIMPAR</Button>
+      </View>
     );
   }
 
   render() {
-    const { photos, fetching } = this.state;
+    const { posts } = this.props;
     return (
-      <View>
+      <View style={styles.container}>
+        <Form
+          onSubmit={this.onAddPress}
+          render={this.renderForm}
+        />
         <FlatList
-          data={photos}
-          keyExtractor={keyExtractor}
+          data={posts}
           renderItem={this.renderItem}
-          refreshControl={(
-            <RefreshControl
-              colors={['red', 'green', 'blue']}
-              refreshing={fetching}
-              onRefresh={this.getFirstPage}
-            />
-          )}
-          onEndReached={this.onEndReached}
-          ListFooterComponent={this.renderFooter()}
+          keyExtractor={keyExtractor}
         />
       </View>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  posts: state.posts,
+});
+
+const mapDispatchToProps = {
+  ...postsActions,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostsScreen);

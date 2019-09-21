@@ -16,4 +16,24 @@ export const actions = {
     addPost,
     removePost,
     clearPosts,
-}
+};
+
+const INITIAL_STATE = [
+    {
+        description: 'Meu primeiro post'
+    }
+];
+
+const postsHandler = handleActions({
+    [ADD_POST_ACTION]: (state, action) => [...state, action.payload],
+    [REMOVE_POST_ACTION]: (state, action) => {
+        const newState = [...state];
+        newState.splice(action.payload, 1);
+        return newState;
+    },
+    [CLEAR_POSTS_ACTION]: (state, action) => [],
+}, INITIAL_STATE)
+
+export const reducers = {
+    posts: postsHandler,
+};
