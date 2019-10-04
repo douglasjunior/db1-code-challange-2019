@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.primeiroprojeto">
+  package="br.com.db1.mrocto">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

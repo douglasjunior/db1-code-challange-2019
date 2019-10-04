@@ -29,6 +29,11 @@ const PaperScreen = (props) => (
       onPress={() => props.navigation.navigate('Tabs')}>
       Abrir Tabs
     </Button>
+    <Button
+      mode="contained"
+      onPress={() => props.navigation.navigate('Posts')}>
+      Abrir Posts
+    </Button>
     <EvilIcons name="calendar" color="black" size={24} />
   </ScrollView>
 );

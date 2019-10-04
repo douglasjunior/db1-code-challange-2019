@@ -1,4 +1,4 @@
-package com.primeiroprojeto;
+package br.com.db1.mrocto;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

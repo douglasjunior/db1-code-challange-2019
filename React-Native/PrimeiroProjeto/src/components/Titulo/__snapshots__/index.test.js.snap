@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot tests Título snapshot 1`] = `
+<Text
+  style={
+    Object {
+      "backgroundColor": "yellow",
+      "color": undefined,
+    }
+  }
+>
+  Meu título
+</Text>
+`;

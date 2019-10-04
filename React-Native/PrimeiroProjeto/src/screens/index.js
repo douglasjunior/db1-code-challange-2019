@@ -49,17 +49,17 @@ const DrawerButton = withNavigation(props => {
 });
 
 const StackNavigator = createStackNavigator({
-    Posts: {
-        screen: PostsScreen,
-        navigationOptions: {
-            title: 'Posts',
-        }
-    },
     Paper: {
         screen: PaperScreen,
         navigationOptions: {
             title: 'Paper screen',
             headerLeft: DrawerButton,
+        }
+    },
+    Posts: {
+        screen: PostsScreen,
+        navigationOptions: {
+            title: 'Posts',
         }
     },
     First: {
